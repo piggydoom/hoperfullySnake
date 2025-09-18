@@ -1,8 +1,8 @@
   const field = document.getElementById('playField');
   const ctx = field.getContext('2d');
   const cS = 10; //cellSize
-  const randomX = Math.round(((Math.random(1, field.clientWidth)) * 200));
-  const randomY = Math.round(((Math.random(1, field.clientHeight)) * 200));
+  const randomX = (((Math.random(1, field.clientWidth))) * 200);
+  const randomY = (((Math.random(1, field.clientHeight))) * 200);
   
 
   var posX = (field.clientWidth / 2);
@@ -15,16 +15,13 @@
   snake.src = 'assets/snake.png';
   apple.src = 'assets/apple.png';
 
-  // ctx.fillStyle = '#007bff';
-  // ctx.fillRect(200, 200, cS, cS);
-
-    
     snake.src = 'assets/snake.png';
-  
+
       snake.onload = () => {
         ctx.drawImage(snake, posX, posY); // Draws the image at (10,10) with width 150 and height 100
     };
 
+  //MOVE MECHANIC
   function moveSnake(direction){
  
   if(direction === "up"){
@@ -67,17 +64,37 @@
       
   });
 
-  setInterval(() => 
-    moveSnake(direction), 200);
+
 
   //FOOD
+
+    function roundToNearestTen(number) {
+  return Math.round(number / cS) * cS;
+};
+
   appleGen();
   
-  function appleGen(){
-    // ctx.fillStyle = '#ff0000ff';
-    // ctx.fillRect(randomX, randomY, cS, cS);  
+  function appleGen(){ 
       apple.onload = () => {
-        ctx.drawImage(apple, randomX, randomY); // Draws the image at (10,10) with width 150 and height 100
+        let appleX = roundToNearestTen(randomX);
+        let appleY = roundToNearestTen(randomY);
+        ctx.drawImage(apple, appleX, appleY);
     };
-
   };
+
+  //tick
+  setInterval(() => {
+    moveSnake(direction);
+
+        let appleX = roundToNearestTen(randomX);
+        let appleY = roundToNearestTen(randomY);
+
+    if((appleX + appleY) == (posX + posY)){
+
+      appleGen();
+      console.log("apple eaten")
+    };
+      
+    }, 200);
+
+  
